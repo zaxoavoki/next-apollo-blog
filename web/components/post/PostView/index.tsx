@@ -1,4 +1,5 @@
 import { Grid, Text, Title, Image, Badge, Button, Flex } from '@mantine/core';
+import { IconHeart } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { AddCommentArea } from 'web/components/comments/components/AddCommentArea';
@@ -6,6 +7,7 @@ import { PostCommentsList } from 'web/components/post/PostCommentsList';
 import {
   useGetLazyPost,
   usePublishPost,
+  useToggleLikePost,
 } from 'web/components/post/PostView/hooks';
 import { PostAuthorCard } from 'web/components/post/components/PostAuthorCard';
 import { PageLoader } from 'web/components/ui/PageLoader';
@@ -18,6 +20,7 @@ export const PostView = () => {
     id as string,
   );
   const { handlePublishClick, isPublishing } = usePublishPost(id as string);
+  const { handleToggleLikePostClick } = useToggleLikePost(id as string);
 
   if (isFetchingPost || isPublishing) {
     return <PageLoader />;
@@ -27,6 +30,8 @@ export const PostView = () => {
     return <div>{errorFetchingPost?.message ?? 'Something went wrong...'}</div>;
   }
 
+  const likes = post.likes?.length;
+  const isLikedByCurrentUser = post.likedByCurrentUser;
   return (
     <Grid>
       <Grid.Col xs={9}>
@@ -34,10 +39,27 @@ export const PostView = () => {
           <Title order={1} fw="bold">
             {post.title}
           </Title>
-          {post.isDraft && (
+          {post.isDraft ? (
             <Badge ml={10} variant="dot">
               Draft
             </Badge>
+          ) : (
+            <Flex ml={20} align="center">
+              <Button
+                variant="transparent"
+                px={5}
+                onClick={() => {
+                  handleToggleLikePostClick().catch(console.error);
+                }}
+              >
+                <IconHeart
+                  size={30}
+                  color="red"
+                  fill={isLikedByCurrentUser ? 'red' : undefined}
+                />
+              </Button>
+              {likes}
+            </Flex>
           )}
         </Flex>
 

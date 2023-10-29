@@ -1,0 +1,5 @@
+mutation toggleLikePost($input: ToggleLikePostInput!) {
+  toggleLikePost(input: $input) {
+    id
+  }
+}

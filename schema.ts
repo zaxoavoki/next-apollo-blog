@@ -19,6 +19,7 @@ const schema = buildSchema(`
     posts(input: PaginationInput): PostConnection!
     comments(input: PaginationInput): CommentConnection!
     role: Role!
+    likedPosts: [ID!]
   }
 
   type Post {
@@ -32,7 +33,9 @@ const schema = buildSchema(`
     previewImage: String
     images: [String!]
     upvotes: Int!
+    likedByCurrentUser: Boolean!
     user: User!
+    likes: [ID!]
   }
 
   type Comment {
@@ -71,6 +74,10 @@ const schema = buildSchema(`
   }
 
   input DeletePostInput {
+    id: ID!
+  }
+
+  input ToggleLikePostInput {
     id: ID!
   }
 
@@ -153,6 +160,7 @@ const schema = buildSchema(`
     updatePost(input: UpdatePostInput!): Post
     publishPost(input: PublishPostInput!): Post
     deletePost(input: DeletePostInput!): ID
+    toggleLikePost(input: ToggleLikePostInput!): Post
 
     createComment(input: CreateCommentInput!): Comment
     updateComment(input: UpdateCommentInput!): Comment

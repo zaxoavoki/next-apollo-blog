@@ -19,6 +19,7 @@ model Post {
   userId       String    @db.ObjectId
   user         User      @relation(fields: [userId], references: [id])
   comments     Comment[]
+  likes        String[]  @default([]) @db.ObjectId
 
   @@unique(fields: [id, userId], name: "idUserId")
 }
@@ -34,6 +35,7 @@ model User {
   role        Role      @default(USER)
   posts       Post[]
   comments    Comment[]
+  likedPosts  String[]  @default([]) @db.ObjectId
 }
 
 model Comment {

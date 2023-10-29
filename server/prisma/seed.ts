@@ -46,6 +46,7 @@ casual.define('post', () => {
     isDraft: !!casual.coin_flip,
     previewImage: extendedCasual.image,
     title: casual.title,
+    likes: [],
     updatedAt: new Date(),
   };
 });
@@ -57,6 +58,7 @@ casual.define('user', () => {
     createdAt: new Date(),
     displayName: casual.name,
     uid: casual.uuid,
+    likedPosts: [],
     updatedAt: new Date(),
   };
 });
